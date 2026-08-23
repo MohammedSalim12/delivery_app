@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       translations: MyTranzalion(),
       initialBinding: Initialbinding(),
       locale: controller.language,
+      theme: controller.apptheme,
       debugShowCheckedModeBanner: false,
       getPages: routes,
     );

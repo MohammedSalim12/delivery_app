@@ -34,15 +34,15 @@ class LoginController extends GetxController {
       var response = await logingData.postData(email.text, password.text);
       print("LOGIN RESPONSE: $response");
 
-      if (response["state"] == "success") {
+      if (response["status"] == "success") {
         statusrequest = StatusRequest.success;
 
-        // ✅ تصحيح المسار: نقرأ القيمة مباشرة وليس داخل data
-        if (response['delivery_approve'] == 1) {
-          // الحساب مفعّل -> احفظ البيانات وروح للهوم
+        var data = response['data']; // ✅ هون الداتا الفعلية
+
+        if (data['delivery_approve'] == 1) {
           myserveies.sharedPreferences.setString(
             "deliveryid",
-            response["delivery_id"].toString(),
+            data["delivery_id"].toString(),
           );
           String deliveryid = myserveies.sharedPreferences.getString(
             "deliveryid",
@@ -50,31 +50,26 @@ class LoginController extends GetxController {
 
           myserveies.sharedPreferences.setString(
             "deliveryname",
-            response["delivery_name"],
+            data["delivery_name"],
           );
           myserveies.sharedPreferences.setString(
             "deliveryemail",
-            response["delivery_email"],
+            data["delivery_email"],
           );
           myserveies.sharedPreferences.setString(
             "deliveryphone",
-            response["delivery_phone"],
+            data["delivery_phone"],
           );
           myserveies.sharedPreferences.setString("step", "2");
+
           FirebaseMessaging.instance.subscribeToTopic("delivery");
-          FirebaseMessaging.instance.subscribeToTopic("delivery${deliveryid}");
-          Get.offNamed(Approutes.homepage);
+          FirebaseMessaging.instance.subscribeToTopic("delivery$deliveryid");
+
+          Get.offNamed(Approutes.homescren);
         } else {
-          // الحساب غير مفعّل -> روح لصفحة إدخال كود التفعيل
-
-          // Get.toNamed(
-          //   Approutes.veryficodesignup,
-          //   arguments: {"email": email.text},
-
-          // );
+          Get.snackbar("تنبيه", "الحساب غير مفعّل بعد");
         }
       } else {
-        // الإيميل غلط أو الباسورد غلط
         Get.snackbar("خطأ", response["message"] ?? "بيانات خاطئة");
         statusrequest = StatusRequest.failuor;
       }
