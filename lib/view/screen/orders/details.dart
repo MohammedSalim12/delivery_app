@@ -1,8 +1,10 @@
 import 'package:delivery_app/controller/orders/detalis_controller.dart';
 import 'package:delivery_app/core/class/handingdataview.dart';
 import 'package:delivery_app/core/constant/appcolor.dart';
+import 'package:delivery_app/core/constant/nameroutes.dart';
+import 'package:delivery_app/view/widget/language/coustombuttomlan.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Details extends StatelessWidget {
@@ -10,6 +12,7 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(OrderdetielesController());
     return Scaffold(
       appBar: AppBar(title: const Text('Order Detieles')),
       body: Container(
@@ -68,9 +71,18 @@ class Details extends StatelessWidget {
                               controller.data.length,
                               (index) => TableRow(
                                 children: [
-                                  Text("${controller.data[index].itemsName}", textAlign: TextAlign.center),
-                                  Text("${controller.data[index].itemsCount}", textAlign: TextAlign.center),
-                                  Text("${controller.data[index].itemsPrice}", textAlign: TextAlign.center),
+                                  Text(
+                                    "${controller.data[index].itemsName}",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    "${controller.data[index].itemsCount}",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    "${controller.data[index].itemsPrice}",
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ],
                               ),
                             ),
@@ -93,40 +105,57 @@ class Details extends StatelessWidget {
                     ),
                   ),
                 ),
-                if(controller.ordersmodel.orderstype == "0")
-                Card(
-                  child: Container(
-                    child: ListTile(
-                      title: Text(
-                        "Shipping Address",
-                        style: TextStyle(
-                          color: Appcolor.secoundcolor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                if (controller.ordersmodel.orderstype == "0")
+                  Card(
+                    child: Container(
+                      child: ListTile(
+                        title: Text(
+                          "Shipping Address",
+                          style: TextStyle(
+                            color: Appcolor.secoundcolor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        subtitle: Text(
+                          "${controller.ordersmodel.addressCity} ${controller.ordersmodel.addressStreet}",
                         ),
                       ),
-                      subtitle: Text(
-                        "${controller.ordersmodel.addressCity} ${controller.ordersmodel.addressStreet}",
+                    ),
+                  ),
+                if (controller.ordersmodel.orderstype == "0")
+                  Card(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      height: 300,
+                      width: double.infinity,
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        markers: controller.markers.toSet(),
+                        initialCameraPosition: controller.cameraPosition!,
+                        onMapCreated: (GoogleMapController controllermap) {
+                          controller.complertecontroller?.complete(
+                            controllermap,
+                          );
+                        },
                       ),
                     ),
                   ),
-                ),
-                if(controller.ordersmodel.orderstype == "0")
-                Card(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    height: 300,
-                    width: double.infinity,
-                    child: GoogleMap(
-                      mapType: MapType.normal,
-                      markers: controller.markers.toSet(),
-                      initialCameraPosition: controller.cameraPosition!,
-                      onMapCreated: (GoogleMapController controllermap) {
-                        controller.complertecontroller?.complete(controllermap);
-                      },
-                    ),
+                SizedBox(height: 10),
+                if (controller.ordersmodel.orderstype == "0" &&
+                    controller.ordersmodel.ordersStatus == "3")
+                  Coustombuttomlan(
+                    textbuttom: "traking",
+                    onPressed: () {
+                      Get.toNamed(
+                        Approutes.traking,
+                        arguments: {"ordermodel": controller.ordersmodel},
+                      );
+                    },
                   ),
-                ),
               ],
             ),
           ),

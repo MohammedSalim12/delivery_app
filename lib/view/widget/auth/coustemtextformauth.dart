@@ -11,7 +11,7 @@ class CustomTextFormAuth extends StatelessWidget {
   final bool? obsecuretext;
   final void Function()? onTapIcon;
   const CustomTextFormAuth({
-    super.key,
+    Key? key,
     required this.hinttext,
     required this.labeltext,
     required this.iconData,

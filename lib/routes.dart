@@ -7,6 +7,7 @@ import 'package:delivery_app/view/screen/languge.dart';
 import 'package:delivery_app/view/screen/orders/accepted.dart';
 import 'package:delivery_app/view/screen/orders/details.dart';
 import 'package:delivery_app/view/screen/orders/pending.dart';
+import 'package:delivery_app/view/screen/orders/traking.dart';
 import 'package:get/get.dart';
 
 List<GetPage>? routes = [  
@@ -17,6 +18,7 @@ List<GetPage>? routes = [
    GetPage(name: Approutes.details, page:() => Details() ),
    GetPage(name: Approutes.accebted, page:() => Accepted() ),
    GetPage(name: Approutes.homescren, page:() => Homescreen() ),
+   GetPage(name: Approutes.traking, page:() => Traking() ),
 ];
 
 // Language() , middlewares: [Mymiddelware()]

@@ -5,5 +5,6 @@ class Approutes {
   static const String details = "/details";
   static const String accebted = "/accebted";
   static const String homescren = "/homescren";
+  static const String traking = "/ttraking";
  
 }

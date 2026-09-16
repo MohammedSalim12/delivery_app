@@ -1,3 +1,4 @@
+import 'package:delivery_app/controller/traking_controller.dart';
 import 'package:delivery_app/core/class/statusRequest.dart';
 import 'package:delivery_app/core/data/datasource/orderpending_data.dart';
 import 'package:delivery_app/core/data/model/ordermodel.dart';
@@ -74,6 +75,7 @@ class PendingController extends GetxController {
     statusRequest = handlingData(response);
     if (statusRequest == StatusRequest.success) {
       if (response['status'] == "success") {
+        Get.put(TrakingController());
       } else {
         statusRequest = StatusRequest.failuor;
       }
